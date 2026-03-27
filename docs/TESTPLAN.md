@@ -1,0 +1,21 @@
+# COBOL Student Account Management System - Test Plan
+
+This test plan covers the business logic and implementation of the current COBOL application for student account management. It includes test cases for all major functionalities including balance viewing, crediting, debiting, and error handling scenarios.
+
+| Test Case ID | Test Case Description | Pre-conditions | Test Steps | Expected Result | Actual Result | Status (Pass/Fail) | Comments |
+|--------------|----------------------|----------------|------------|-----------------|---------------|-------------------|----------|
+| TC001 | View Initial Balance | Application is compiled and executable exists | 1. Run ./accountsystem<br>2. Select option 1 (View Balance) | Displays "Current balance: 1000.00" |  |  | Initial balance should be $1000.00 |
+| TC002 | Credit Account - Valid Amount | Application is running, initial balance is $1000.00 | 1. Select option 2 (Credit Account)<br>2. Enter amount: 500.00 | Displays "Amount credited. New balance: 1500.00" |  |  | Balance should increase by credited amount |
+| TC003 | Debit Account - Valid Amount | Application is running, balance is $1500.00 (after TC002) | 1. Select option 3 (Debit Account)<br>2. Enter amount: 200.00 | Displays "Amount debited. New balance: 1300.00" |  |  | Balance should decrease by debited amount |
+| TC004 | Debit Account - Insufficient Funds | Application is running, balance is $1300.00 | 1. Select option 3 (Debit Account)<br>2. Enter amount: 2000.00 | Displays "Insufficient funds for this debit." |  |  | Should prevent overdraft |
+| TC005 | Multiple Operations Sequence | Application is running, initial balance $1000.00 | 1. Credit $300.00<br>2. View balance<br>3. Debit $200.00<br>4. View balance | 1. New balance: 1300.00<br>2. Current balance: 1300.00<br>3. New balance: 1100.00<br>4. Current balance: 1100.00 |  |  | Data persistence across operations |
+| TC006 | Invalid Menu Selection | Application is running | 1. Enter invalid choice (e.g., 5) | Displays "Invalid choice, please select 1-4." and shows menu again |  |  | Input validation for menu options |
+| TC007 | Exit Application | Application is running | 1. Select option 4 (Exit) | Displays "Exiting the program. Goodbye!" and terminates |  |  | Clean application exit |
+| TC008 | Credit Zero Amount | Application is running, balance is $1100.00 | 1. Select option 2 (Credit Account)<br>2. Enter amount: 0.00 | Displays "Amount credited. New balance: 1100.00" |  |  | Zero amount should not change balance |
+| TC009 | Debit Zero Amount | Application is running, balance is $1100.00 | 1. Select option 3 (Debit Account)<br>2. Enter amount: 0.00 | Displays "Amount debited. New balance: 1100.00" |  |  | Zero amount should not change balance |
+| TC010 | Credit Negative Amount | Application is running, balance is $1100.00 | 1. Select option 2 (Credit Account)<br>2. Enter amount: -100.00 | Displays "Amount credited. New balance: 1000.00" |  |  | Negative credit should decrease balance (business rule clarification needed) |
+| TC011 | Debit Negative Amount | Application is running, balance is $1100.00 | 1. Select option 3 (Debit Account)<br>2. Enter amount: -100.00 | Displays "Amount debited. New balance: 1200.00" |  |  | Negative debit should increase balance (business rule clarification needed) |
+| TC012 | Large Amount Credit | Application is running, balance is $1200.00 | 1. Select option 2 (Credit Account)<br>2. Enter amount: 999999.99 | Displays "Amount credited. New balance: 1001200.00" |  |  | System should handle large amounts |
+| TC013 | Balance Persistence After Restart | Application restarted after operations | 1. Run ./accountsystem<br>2. Select option 1 (View Balance) | Displays "Current balance: 1000.00" |  |  | Balance resets to initial value on restart (no persistent storage) |
+| TC014 | Decimal Amount Handling | Application is running, balance is $1000.00 | 1. Select option 2 (Credit Account)<br>2. Enter amount: 123.45 | Displays "Amount credited. New balance: 1123.45" |  |  | Proper decimal handling |
+| TC015 | Menu Loop Functionality | Application is running | 1. Perform any valid operation<br>2. Verify menu appears again after operation | Menu displays repeatedly until exit is selected |  |  | Continuous operation until exit |
